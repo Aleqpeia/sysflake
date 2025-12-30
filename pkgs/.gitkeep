@@ -1,0 +1,3 @@
+# Custom packages directory for pkgs-by-name
+# Add packages here as subdirectories, e.g.:
+# pkgs/my-package/package.nix

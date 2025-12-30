@@ -1,0 +1,59 @@
+version: "3.8"
+
+# Syscfg Monitoring Stack
+# Run with: podman-compose up -d
+# Access Grafana at: http://localhost:3000 (admin/admin)
+
+services:
+  # Status collector - receives status.json from machines
+  collector:
+    image: python:3.11-slim
+    container_name: syscfg-collector
+    volumes:
+      - ./collector:/app
+      - status-data:/data
+    ports:
+      - "8080:8080"
+    command: python /app/server.py
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Prometheus for metrics
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: syscfg-prometheus
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prometheus-data:/prometheus
+    ports:
+      - "9090:9090"
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+
+  # Grafana for dashboards
+  grafana:
+    image: grafana/grafana:latest
+    container_name: syscfg-grafana
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - grafana-data:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+
+volumes:
+  status-data:
+  prometheus-data:
+  grafana-data:
