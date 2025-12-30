@@ -1,0 +1,64 @@
+# Registry System Schema
+# Location: ~/.config/syscfg/registry.toml (machine-local, not synced)
+# Synced version: private/registry/<hostname>.toml (optional, for backup)
+
+# This file documents the schema. Each machine maintains its own registry.
+
+# =============================================================================
+# GPG KEYS
+# =============================================================================
+# [gpg.shared.<key-id>]
+# fingerprint = "ABCD1234..."
+# purpose = "git-signing"           # git-signing, encryption, authentication
+# email = "user@example.com"
+# created = "2024-01-01"
+# synced_from = "altair"            # which machine generated it
+#
+# [gpg.local.<key-id>]
+# fingerprint = "EFGH5678..."
+# purpose = "work-encryption"
+# created = "2024-01-01"
+
+# =============================================================================
+# SSH KEYS
+# =============================================================================
+# [ssh.shared.github]
+# fingerprint = "SHA256:..."
+# pubkey_file = "github_ed25519.pub"
+# created = "2024-01-01"
+# registered_at = ["github.com", "gitlab.com"]
+#
+# [ssh.local.hpc]
+# fingerprint = "SHA256:..."
+# pubkey_file = "hpc_ed25519.pub"
+# created = "2024-01-01"
+# registered_at = ["cluster.university.edu"]
+
+# =============================================================================
+# DEVENV PROJECTS
+# =============================================================================
+# [devenv.<project-name>]
+# path = "/home/user/projects/myproject"
+# type = "python"                    # python, rust, mixed, etc.
+# description = "MD analysis toolkit"
+# last_used = "2024-12-30"
+# dependencies = ["gromacs", "pytorch"]
+# 
+# # Optional: track the devenv.nix hash for drift detection
+# devenv_hash = "sha256:..."
+
+# =============================================================================
+# SERVICES (for Phase 3 monitoring)
+# =============================================================================
+# [services.sync]
+# enabled = true
+# interval = "1h"
+# last_run = "2024-12-30T10:00:00Z"
+# last_status = "success"
+#
+# [services.drift-check]
+# enabled = true
+# interval = "6h"
+# last_run = "2024-12-30T06:00:00Z"
+# last_status = "drift-detected"
+# drift_details = "3 packages added"

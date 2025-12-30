@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "sysflake"
 version = "0.1.0"
-description = ""
-authors = ["efyis <mbobylyov@biph.kiev.ua>"]
+description = "management, dotfiles, CI/CD for personal machines and their internal/external connections"
+authors = ["Mykyta Bobylyow <mbobylyov@biph.kiev.ua>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.13"
-
+tomli-w = "^0.3"
 
 [build-system]
 requires = ["poetry-core"]
