@@ -45,7 +45,7 @@
       };
 
       core = {
-        editor = "nvim";
+        editor = "nim";
         pager = "delta";
         whitespace = "trailing-space,space-before-tab";
       };

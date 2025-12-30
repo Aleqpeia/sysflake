@@ -56,9 +56,9 @@
       ndev = "nix develop";
 
       # Editors
-      v = "nvim";
-      vi = "nvim";
-      vim = "nvim";
+      v = "nim";
+      vi = "nim";
+      vim = "nim";
 
       # System
       sc = "sudo systemctl";

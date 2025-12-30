@@ -7,7 +7,7 @@
 {
   imports = [
     ./apps
-    ./nixvim.nix
+    ./nvim.nix
     ./overlays.nix
     ./pkgs-by-name.nix
     ./home-manager.nix
@@ -42,6 +42,7 @@
           allowUnfree = true;
         };
       };
+      # Default package is the custom neovim
       packages.default = config.packages.khanelivim;
     };
 }

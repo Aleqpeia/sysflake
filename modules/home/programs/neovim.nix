@@ -6,10 +6,10 @@
     self.packages.${pkgs.system}.khanelivim
   ];
 
-  # Ensure nvim is the default editor
+  # Ensure nim is the default editor
   home.sessionVariables = {
-    EDITOR = "nvim";
-    VISUAL = "nvim";
+    EDITOR = "nim";
+    VISUAL = "nim";
   };
 
   # Additional neovim-related packages

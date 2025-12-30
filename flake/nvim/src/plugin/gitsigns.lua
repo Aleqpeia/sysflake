@@ -18,7 +18,6 @@ vim.schedule(function()
         vim.keymap.set(mode, l, r, opts)
       end
 
-      -- Navigation
       map('n', ']g', function()
         if vim.wo.diff then
           return ']g'
@@ -39,7 +38,6 @@ vim.schedule(function()
         return '<Ignore>'
       end, { expr = true, desc = '[g]it previous hunk' })
 
-      -- Actions
       map({ 'n', 'v' }, '<leader>hs', function()
         vim.cmd.Gitsigns('stage_hunk')
       end, { desc = 'git [h]unk [s]tage' })
@@ -59,7 +57,6 @@ vim.schedule(function()
         gs.diffthis('~')
       end, { desc = 'git [h] [D]iff ~' })
       map('n', '<leader>td', gs.toggle_deleted, { desc = 'git [t]oggle [d]eleted' })
-      -- Text object
       map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>', { desc = 'git stage buffer' })
     end,
   }

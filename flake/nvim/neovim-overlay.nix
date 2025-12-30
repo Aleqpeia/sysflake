@@ -20,7 +20,7 @@ with final.pkgs.lib; let
     };
 
   # A plugin can either be a package or an attrset, such as
-  # { plugin = <plugin>; # the package, e.g. pkgs.vimPlugins.nvim-cmp
+  # { plugin = <plugin>; # the package, e.g. pkgs.vimPlugins.nim-cmp
   #   config = <config>; # String; a config that will be loaded with the plugin
   #   # Boolean; Whether to automatically load the plugin as a 'start' plugin,
   #   # or as an 'opt' plugin, that can be loaded with `:packadd!`
@@ -32,9 +32,9 @@ with final.pkgs.lib; let
     # https://search.nixos.org/packages?channel=unstable&from=0&size=50&sort=relevance&type=packages&query=vimPlugins
     nvim-treesitter.withAllGrammars
     luasnip # snippets | https://github.com/l3mon4d3/luasnip/
-    # nvim-cmp (autocompletion) and extensions
+    # nim-cmp (autocompletion) and extensions
     nvim-cmp # https://github.com/hrsh7th/nvim-cmp
-    cmp_luasnip # snippets autocompletion extension for nvim-cmp | https://github.com/saadparwaiz1/cmp_luasnip/
+    cmp_luasnip # snippets autocompletion extension for nim-cmp | https://github.com/saadparwaiz1/cmp_luasnip/
     lspkind-nvim # vscode-like LSP pictograms | https://github.com/onsails/lspkind.nvim/
     cmp-nvim-lsp # LSP as completion source | https://github.com/hrsh7th/cmp-nvim-lsp/
     cmp-nvim-lsp-signature-help # https://github.com/hrsh7th/cmp-nvim-lsp-signature-help/
@@ -43,7 +43,7 @@ with final.pkgs.lib; let
     cmp-nvim-lua # neovim lua API as completion source | https://github.com/hrsh7th/cmp-nvim-lua/
     cmp-cmdline # cmp command line suggestions
     cmp-cmdline-history # cmp command line history suggestions
-    # ^ nvim-cmp extensions
+    # ^ nim-cmp extensions
     # git integration plugins
     diffview-nvim # https://github.com/sindrets/diffview.nvim/
     neogit # https://github.com/TimUntersberger/neogit/
@@ -53,13 +53,13 @@ with final.pkgs.lib; let
     # telescope and extensions
     telescope-nvim # https://github.com/nvim-telescope/telescope.nvim/
     telescope-fzy-native-nvim # https://github.com/nvim-telescope/telescope-fzy-native.nvim
-    # telescope-smart-history-nvim # https://github.com/nvim-telescope/telescope-smart-history.nvim
+    # telescope-smart-history-nim # https://github.com/nvim-telescope/telescope-smart-history.nvim
     # ^ telescope and extensions
     # UI
     lualine-nvim # Status line | https://github.com/nvim-lualine/lualine.nvim/
     nvim-navic # Add LSP location to lualine | https://github.com/SmiteshP/nvim-navic
     statuscol-nvim # Status column | https://github.com/luukvbaal/statuscol.nvim/
-    nvim-treesitter-context # nvim-treesitter-context
+    nvim-treesitter-context # nim-treesitter-context
     # ^ UI
     # language support
     # ^ language support
@@ -71,7 +71,7 @@ with final.pkgs.lib; let
     nvim-ts-context-commentstring # https://github.com/joosepalviste/nvim-ts-context-commentstring/
     # ^ navigation/editing enhancement plugins
     # Useful utilities
-    nvim-unception # Prevent nested neovim sessions | nvim-unception
+    nvim-unception # Prevent nested neovim sessions | nim-unception
     # ^ Useful utilities
     # libraries that other plugins depend on
     sqlite-lua
@@ -80,7 +80,7 @@ with final.pkgs.lib; let
     vim-repeat
     # ^ libraries that other plugins depend on
     # bleeding-edge plugins from flake inputs
-    # (mkNvimPlugin inputs.wf-nvim "wf.nvim") # (example) keymap hints | https://github.com/Cassin01/wf.nvim
+    # (mkNvimPlugin inputs.wf-nim "wf.nim") # (example) keymap hints | https://github.com/Cassin01/wf.nvim
     # ^ bleeding-edge plugins from flake inputs
     which-key-nvim
   ];
@@ -100,11 +100,11 @@ in {
 
   # This is meant to be used within a devshell.
   # Instead of loading the lua Neovim configuration from
-  # the Nix store, it is loaded from $XDG_CONFIG_HOME/nvim-dev
+  # the Nix store, it is loaded from $XDG_CONFIG_HOME/nim-dev
   nvim-dev = mkNeovim {
     plugins = all-plugins;
     inherit extraPackages;
-    appName = "nvim-dev";
+    appName = "nim-dev";
     wrapRc = false;
   };
 
@@ -119,7 +119,7 @@ in {
   #
   # For example:
   #
-  # nvim-pkg-no-telescope = mkNeovim {
+  # nim-pkg-no-telescope = mkNeovim {
   #   plugins = [];
   #   ignoreConfigRegexes = [
   #     "^plugin/telescope.lua"

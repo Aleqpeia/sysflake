@@ -14,7 +14,6 @@ neogit.setup {
     fzf_lua = true,
   },
   sections = {
-    ---@diagnostic disable-next-line: missing-fields
     recent = {
       folded = false,
     },
