@@ -1,0 +1,27 @@
+# Private configurations (machine-specific secrets, work configs)
+private/*
+!private/.gitkeep
+
+# Nix build outputs
+result
+result-*
+
+# Direnv
+.direnv/
+
+# Editor artifacts
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.sublime-*
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# Python cache (from scripts)
+__pycache__/
+*.py[cod]
+.venv/

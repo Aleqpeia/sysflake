@@ -1,0 +1,16 @@
+# This directory contains machine-specific private configurations
+# All files here are gitignored except this placeholder
+
+# Structure:
+# private/
+#   hosts/
+#     <hostname>/
+#       home.nix    # Private home-manager overrides
+#   secrets.nix     # Encrypted secrets (if using agenix/sops)
+
+# Example private/hosts/proxima/home.nix:
+# { ... }:
+# {
+#   programs.git.userEmail = "your.email@example.com";
+#   programs.git.signing.key = "...";
+# }

@@ -1,0 +1,21 @@
+# Schema documentation for machine manifests
+# Each host with non-nix package management gets a <hostname>.toml
+
+# [meta]
+# hostname = "string"          # must match hosts/ directory
+# updated = "ISO8601"          # last reconciliation timestamp  
+# managed_by = "dnf|apt|brew"  # package manager
+
+# [packages]
+# system = ["pkg1", "pkg2"]    # explicitly installed, required
+# optional = ["pkg3"]          # installed but removable
+# groups = ["group1"]          # package groups (dnf/apt)
+
+# [flatpak]
+# packages = ["app.id.Name"]
+
+# [copr]  # Fedora-specific
+# repos = ["owner/repo"]
+
+# [excluded]
+# packages = ["pkg"]           # explicitly NOT wanted (blocks auto-add)
