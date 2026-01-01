@@ -1,7 +1,11 @@
 # Dev partition extra inputs
-# Copy your current dev/flake.nix content here if you have one
 {
   inputs = {
-    # Add dev-specific inputs here
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+  };
+
+  outputs = inputs: {
+    # Dev partition outputs will be handled by flake-parts
+    inherit inputs;
   };
 }

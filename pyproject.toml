@@ -1,14 +1,26 @@
-[tool.poetry]
-name = "sysflake"
+[project]
+name = "syscfg"
 version = "0.1.0"
-description = "management, dotfiles, CI/CD for personal machines and their internal/external connections"
-authors = ["Mykyta Bobylyow <mbobylyov@biph.kiev.ua>"]
-readme = "README.md"
+description = "Multi-machine configuration management scripts"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=2.2.6",
+    "tomli>=2.0; python_version < '3.11'",
+    "tomli-w>=1.0",
+]
 
-[tool.poetry.dependencies]
-python = "^3.13"
-tomli-w = "^0.3"
+[project.optional-dependencies]
+dev = [
+    "ruff",
+    "mypy",
+]
 
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[project.scripts]
+registry = "scripts.registry:main"
+manifest = "scripts.manifest:main"
+
+[tool.uv]
+dev-dependencies = [
+    "ruff",
+    "mypy",
+]

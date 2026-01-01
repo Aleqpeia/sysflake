@@ -13,8 +13,10 @@
     ./home-manager.nix
     ./nixos.nix
     inputs.flake-parts.flakeModules.partitions
+    ./dev
   ];
 
+  # Partitions configuration
   partitions = {
     dev = {
       module = ./dev;

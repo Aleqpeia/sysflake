@@ -4,7 +4,7 @@ let
   hosts = {
     altair = {
       system = "x86_64-linux";
-      mode = "nixos";
+      mode = "standalone";  # EndevourOS with home-manager
       username = "efyis";
       profiles = [ "base" "dev" "gui" ];
     };
@@ -16,7 +16,7 @@ let
     };
     vega = {
       system = "x86_64-linux";
-      mode = "standalone";
+      mode = "nixos";  # Full NixOS system
       username = "efyis";
       profiles = [ "base" "dev" ];
     };

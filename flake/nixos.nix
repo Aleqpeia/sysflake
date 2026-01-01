@@ -26,10 +26,10 @@ let
             };
             users.${hostCfg.username} = { ... }: {
               imports = [
-                ../../modules/home
-                ./home.nix
-              ] ++ lib.optional (builtins.pathExists ../../private/hosts/${hostname}/home.nix)
-                   ../../private/hosts/${hostname}/home.nix;
+                ../modules/home
+                ../hosts/${hostname}/home.nix
+              ] ++ lib.optional (builtins.pathExists ../private/hosts/${hostname}/home.nix)
+                   ../private/hosts/${hostname}/home.nix;
             };
           };
         }

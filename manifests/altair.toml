@@ -1,0 +1,75 @@
+[meta]
+hostname = "altair"
+updated = "2025-12-30T09:53:31.484344+00:00"
+managed_by = "pacman"
+
+[packages]
+system = [
+    # Core system
+    "zsh",
+    "git",
+    "curl",
+    "wget",
+    "rsync",
+
+    # Development
+    "gcc",
+    "g++",
+    "cmake",
+    "ninja-build",
+    "clang",
+    "llvm",
+    "make",
+    "autoconf",
+    "automake",
+    "libtool",
+    "pkg-config",
+
+    # Python (system version for compatibility)
+    "python3",
+    "python3-devel",
+    "python3-pip",
+
+    # System integration (better via dnf than nix)
+    "podman",
+    "buildah",
+    "skopeo",
+    "systemd-container",
+
+    # Libraries (needed for nix builds sometimes)
+    "openssl-devel",
+    "zlib-devel",
+    "bzip2-devel",
+    "sqlite-devel",
+    "libffi-devel",
+
+    # HPC / GROMACS dependencies
+    "openmpi",
+    "openmpi-devel",
+    "fftw",
+    "fftw-devel",
+
+    # Drivers / hardware
+    "mesa-vulkan-drivers",
+    "vulkan-loader",
+]
+
+groups = [
+    "development-tools",
+    "c-development",
+]
+
+optional = [
+    "htop",
+    "neofetch",
+    "fastfetch",
+]
+
+[flatpak]
+packages = []
+
+[copr]
+repos = []
+
+[excluded]
+packages = []

@@ -4,16 +4,13 @@
     ./hardware.nix
   ];
 
-  # Host-specific NixOS configuration for altair
-  # This is your main NixOS workstation
+  # Host-specific NixOS configuration for vega
+  # Full NixOS system
 
-  # Desktop environment (adjust as needed)
-  services.xserver = {
-    enable = true;
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
-    # Or use: windowManager.i3.enable = true;
-  };
+  # Desktop environment (vega has no GUI by default as per profiles)
+  # Uncomment if you want a GUI on vega:
+  # services.displayManager.gdm.enable = true;
+  # services.desktopManager.gnome.enable = true;
 
   # Audio
   services.pipewire = {

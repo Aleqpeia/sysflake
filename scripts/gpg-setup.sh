@@ -145,27 +145,53 @@ cmd_export() {
     mkdir -p "$output_dir"
     chmod 700 "$output_dir"
     
-    # Get shared keys from registry or prompt
-    if [[ -f "$HOME/.config/syscfg/registry.toml" ]] && command -v python3 &>/dev/null; then
-        # Use registry to find shared keys
-        log "Reading shared keys from registry..."
-        # Simple grep for now, registry.py export is more complete
-        python3 "$SCRIPT_DIR/registry.py" gpg export --output "$output_dir" --include-secret
-    else
-        # Manual export
-        echo "Enter the key ID of your shared signing key:"
+    # Get signing key from git config or prompt
+    local key_id
+    key_id=$(git config --global user.signingkey 2>/dev/null || true)
+    
+    if [[ -z "$key_id" ]]; then
+        echo "Available secret keys:"
         gpg --list-secret-keys --keyid-format=long
-        read -p "Key ID: " key_id
-        
-        gpg --armor --export "$key_id" > "$output_dir/${key_id}.pub.asc"
-        gpg --armor --export-secret-keys "$key_id" > "$output_dir/${key_id}.sec.asc"
-        
-        log "Exported to $output_dir"
+        read -p "Enter key ID to export: " key_id
     fi
     
+    if [[ -z "$key_id" ]]; then
+        echo "No key specified"
+        exit 1
+    fi
+    
+    # Get fingerprint
+    local fingerprint
+    fingerprint=$(gpg --fingerprint "$key_id" 2>/dev/null | grep -A1 "pub" | tail -1 | tr -d ' ')
+    
+    # Export public key
+    log "Exporting public key..."
+    gpg --armor --export "$key_id" > "$output_dir/${key_id}.pub.asc"
+    
+    # Export secret key
+    log "Exporting secret key (you may be prompted for passphrase)..."
+    gpg --armor --export-secret-keys "$key_id" > "$output_dir/${key_id}.sec.asc"
+    
+    # Get email
+    local email
+    email=$(gpg --list-keys "$key_id" 2>/dev/null | grep -oP '<\K[^>]+' | head -1)
+    
+    # Write key info
+    cat > "$output_dir/keys.toml" << EOF
+[gpg.shared."$key_id"]
+fingerprint = "$fingerprint"
+purpose = "git-signing"
+email = "$email"
+exported_from = "$(hostname)"
+exported_at = "$(date -Iseconds)"
+EOF
+    
+    log "Exported to $output_dir/"
+    ls -la "$output_dir"
+    
     echo ""
-    log "Transfer $output_dir to your other machine securely"
-    echo "Then run: ./gpg-setup.sh import $output_dir"
+    log "Transfer this directory securely to your other machine"
+    echo "Then run: ./scripts/gpg-setup.sh import $output_dir"
 }
 
 cmd_import() {

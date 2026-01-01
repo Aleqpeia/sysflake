@@ -14,7 +14,7 @@
     python3
     python3Packages.pip
     python3Packages.ipython
-    rustup
+    cargo
     cargo-watch
     cargo-edit
 

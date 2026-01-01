@@ -21,7 +21,9 @@
     zathura
 
     # Fonts
-    (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" "Iosevka" ]; })
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.fira-code  
+    nerd-fonts.iosevka
     inter
     liberation_ttf
   ];

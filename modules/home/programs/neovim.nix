@@ -1,19 +1,11 @@
 { pkgs, self, ... }:
 {
-  # Use nixvim from the flake's packages
-  # This wraps your existing nixvim configuration
+  # Use custom nvim from the flake's packages
+  # This wraps your existing neovim configuration
   home.packages = [
     self.packages.${pkgs.system}.khanelivim
-  ];
-
-  # Ensure nim is the default editor
-  home.sessionVariables = {
-    EDITOR = "nim";
-    VISUAL = "nim";
-  };
-
-  # Additional neovim-related packages
-  home.packages = with pkgs; [
+  ]
+  ++ (with pkgs; [
     # Clipboard support
     wl-clipboard
     xclip
@@ -26,5 +18,11 @@
     shfmt
     stylua
     nixfmt-rfc-style
-  ];
+  ]);
+
+  # Ensure nvim is the default editor
+  home.sessionVariables = {
+    EDITOR = "nvim";
+    VISUAL = "nvim";
+  };
 }

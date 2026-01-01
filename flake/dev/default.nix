@@ -1,6 +1,5 @@
-# Your existing dev partition
-# Copy your current dev/default.nix content here
-{ ... }:
+# Dev partition - development shell and formatter
+{ inputs, ... }:
 {
   perSystem = { pkgs, ... }: {
     devShells.default = pkgs.mkShell {

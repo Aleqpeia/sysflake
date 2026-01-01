@@ -10,15 +10,15 @@
   neovimUtils,
 }:
 with lib;
-  {
-    # NVIM_APPNAME - Defaults to 'nim' if not set.
+{
+    # NVIM_APPNAME - Defaults to 'nvim' if not set.
     # If set to something else, this will also rename the binary.
     appName ? null,
     plugins ? [], # List of plugins
     # List of dev plugins (will be bootstrapped) - useful for plugin developers
     # { name = <plugin-name>; url = <git-url>; }
     devPlugins ? [],
-    # Regexes for config files to ignore, relative to the nim directory.
+    # Regexes for config files to ignore, relative to the nvim directory.
     # e.g. [ "^plugin/neogit.lua" "^ftplugin/.*.lua" ]
     ignoreConfigRegexes ? [],
     extraPackages ? [], # Extra runtime dependencies (e.g. ripgrep, ...)
@@ -32,17 +32,17 @@ with lib;
     withNodeJs ? false, # Build Neovim with NodeJS support?
     withSqlite ? true, # Add sqlite? This is a dependency for some plugins
     # You probably don't want to create vi or vim aliases
-    # if the appName is something different than "nim"
+    # if the appName is something different than "nvim"
     # Add a "vi" binary to the build output as an alias?
-    viAlias ? appName == null || appName == "nim",
+    viAlias ? appName == null || appName == "nvim",
     # Add a "vim" binary to the build output as an alias?
-    vimAlias ? appName == null || appName == "nim",
+    vimAlias ? appName == null || appName == "nvim",
     wrapRc ? true,
-  }: let
+}: let
     # This is the structure of a plugin definition.
     # Each plugin in the `plugins` argument list can also be defined as this attrset
     defaultPlugin = {
-      plugin = null; # e.g. nim-lspconfig
+      plugin = null; # e.g. nvim-lspconfig
       config = null; # plugin config
       # If `optional` is set to `false`, the plugin is installed in the 'start' packpath
       # set to `true`, it is installed in the 'opt' packpath, and can be lazy loaded with
@@ -71,14 +71,14 @@ with lib;
     };
 
     # This uses the ignoreConfigRegexes list to filter
-    # the nim directory
+    # the nvim directory
     nvimRtpSrc = let
-          src = ./src;
+      src = ./src;
     in
       lib.cleanSourceWith {
         inherit src;
-        name = "nim-rtp-src";
-        filter = path: tyoe: let
+        name = "nvim-rtp-src";
+        filter = path: type: let
           srcPrefix = toString src + "/";
           relPath = lib.removePrefix srcPrefix (toString path);
         in
@@ -87,15 +87,15 @@ with lib;
 
     # Split runtimepath into 3 directories:
     # - lua, to be prepended to the rtp at the beginning of init.lua
-    # - nim, containing plugin, ftplugin, ... subdirectories
+    # - nvim, containing plugin, ftplugin, ... subdirectories
     # - after, to be sourced last in the startup initialization
     # See also: https://neovim.io/doc/user/starting.html
     nvimRtp = stdenv.mkDerivation {
-      name = "nim-rtp";
+      name = "nvim-rtp";
       src = nvimRtpSrc;
 
       buildPhase = ''
-        mkdir -p $out/nim
+        mkdir -p $out/nvim
         mkdir -p $out/lua
         rm init.lua
       '';
@@ -103,21 +103,21 @@ with lib;
       installPhase = ''
         cp -r lua $out/lua
         rm -r lua
-        # Copy nim/after only if it exists
+        # Copy nvim/after only if it exists
         if [ -d "after" ]; then
             cp -r after $out/after
             rm -r after
         fi
-        # Copy rest of nim/ subdirectories only if they exist
+        # Copy rest of nvim/ subdirectories only if they exist
         if [ ! -z "$(ls -A)" ]; then
-            cp -r -- * $out/nim
+            cp -r -- * $out/nvim
         fi
       '';
     };
 
     # The final init.lua content that we pass to the Neovim wrapper.
     # It wraps the user init.lua, prepends the lua lib directory to the RTP
-    # and prepends the nim and after directory to the RTP
+    # and prepends the nvim and after directory to the RTP
     # It also adds logic for bootstrapping dev plugins (for plugin developers)
     initLua =
       ''
@@ -145,13 +145,13 @@ with lib;
         '')
         devPlugins
       )
-      # Prepend nim and after directories to the runtimepath
+      # Prepend nvim and after directories to the runtimepath
       # NOTE: This is done after init.lua,
       # because of a bug in Neovim that can cause filetype plugins
       # to be sourced prematurely, see https://github.com/neovim/neovim/issues/19008
       # We prepend to ensure that user ftplugins are sourced before builtin ftplugins.
       + ''
-        vim.opt.rtp:prepend('${nvimRtp}/nim')
+        vim.opt.rtp:prepend('${nvimRtp}/nvim')
         vim.opt.rtp:prepend('${nvimRtp}/after')
       '';
 
@@ -161,7 +161,7 @@ with lib;
       sqliteLibPath = "${sqlite.out}/lib/libsqlite3${sqliteLibExt}";
     in builtins.concatStringsSep " " (
       # Set the NVIM_APPNAME environment variable
-      (optional (appName != "nim" && appName != null && appName != "")
+      (optional (appName != "nvim" && appName != null && appName != "")
         ''--set NVIM_APPNAME "${appName}"'')
       # Add external packages to the PATH
       ++ (optional (externalPackages != [])
@@ -202,14 +202,14 @@ with lib;
         wrapRc = wrapRc;
       });
 
-    isCustomAppName = appName != null && appName != "nim";
-  in
+    isCustomAppName = appName != null && appName != "nvim";
+in
     neovim-wrapped.overrideAttrs (oa: {
       buildPhase =
         oa.buildPhase
-        # If a custom NVIM_APPNAME has been set, rename the `nim` binary
+        # If a custom NVIM_APPNAME has been set, rename the `nvim` binary
         + lib.optionalString isCustomAppName ''
-          mv $out/bin/nim $out/bin/${lib.escapeShellArg appName}
+          mv $out/bin/nvim $out/bin/${lib.escapeShellArg appName}
         '';
       meta.mainProgram 
         = if isCustomAppName 

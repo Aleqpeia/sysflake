@@ -12,10 +12,14 @@ result-*
 # Editor artifacts
 *.swp
 *.swo
+.cursor/
 *~
 .idea/
 .vscode/
 *.sublime-*
+USAGE.md
+SESSION.md
+**/*.lock
 
 # OS artifacts
 .DS_Store
@@ -25,3 +29,11 @@ Thumbs.db
 __pycache__/
 *.py[cod]
 .venv/
+.mypy_cache/
+docs/ALTAIR_TOOLS.md
+uv.lock
+flake.lock
+USAGE.md
+gpg-export/5095C812B4021FB3.pub.asc
+gpg-export/keys.toml
+docs/PRINTING_SETUP.md

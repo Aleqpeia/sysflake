@@ -6,6 +6,9 @@
     syntaxHighlighting.enable = true;
     enableCompletion = true;
 
+    # Set dotDir to XDG config directory (new default in 26.05+)
+    dotDir = "${config.xdg.configHome}/zsh";
+
     history = {
       size = 100000;
       save = 100000;
@@ -56,9 +59,9 @@
       ndev = "nix develop";
 
       # Editors
-      v = "nim";
-      vi = "nim";
-      vim = "nim";
+      v = "nvim";
+      vi = "nvim";
+      vim = "nvim";
 
       # System
       sc = "sudo systemctl";
@@ -76,54 +79,56 @@
       cp = "cp -i";
     };
 
-    initExtraFirst = ''
-      # Performance: only check compinit once a day
-      autoload -Uz compinit
-      if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
-        compinit
-      else
-        compinit -C
-      fi
-    '';
+    # Zsh initialization content (replaces deprecated initExtraFirst/initExtra)
+    initContent = lib.mkMerge [
+      (lib.mkBefore ''
+        # Performance: only check compinit once a day
+        autoload -Uz compinit
+        if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
+          compinit
+        else
+          compinit -C
+        fi
+      '')
+      
+      ''
+        # History search with up/down arrows
+        autoload -U up-line-or-beginning-search
+        autoload -U down-line-or-beginning-search
+        zle -N up-line-or-beginning-search
+        zle -N down-line-or-beginning-search
+        bindkey "^[[A" up-line-or-beginning-search
+        bindkey "^[[B" down-line-or-beginning-search
 
-    initExtra = ''
-      # History search with up/down arrows
-      autoload -U up-line-or-beginning-search
-      autoload -U down-line-or-beginning-search
-      zle -N up-line-or-beginning-search
-      zle -N down-line-or-beginning-search
-      bindkey "^[[A" up-line-or-beginning-search
-      bindkey "^[[B" down-line-or-beginning-search
+        # Edit command in $EDITOR with Ctrl-X Ctrl-E
+        autoload -z edit-command-line
+        zle -N edit-command-line
+        bindkey "^X^E" edit-command-line
 
-      # Edit command in $EDITOR with Ctrl-X Ctrl-E
-      autoload -z edit-command-line
-      zle -N edit-command-line
-      bindkey "^X^E" edit-command-line
+        # Word navigation (Ctrl + arrows)
+        bindkey "^[[1;5C" forward-word
+        bindkey "^[[1;5D" backward-word
 
-      # Word navigation (Ctrl + arrows)
-      bindkey "^[[1;5C" forward-word
-      bindkey "^[[1;5D" backward-word
+        # Better directory stack
+        setopt AUTO_PUSHD
+        setopt PUSHD_IGNORE_DUPS
+        setopt PUSHD_SILENT
 
-      # Better directory stack
-      setopt AUTO_PUSHD
-      setopt PUSHD_IGNORE_DUPS
-      setopt PUSHD_SILENT
+        # Globbing
+        setopt EXTENDED_GLOB
+        setopt NO_CASE_GLOB
 
-      # Globbing
-      setopt EXTENDED_GLOB
-      setopt NO_CASE_GLOB
+        # Job control
+        setopt NO_HUP
+        setopt NO_BG_NICE
 
-      # Job control
-      setopt NO_HUP
-      setopt NO_BG_NICE
+        # Host/mode identification
+        export SYSCFG_HOST="${hostname}"
 
-      # Host/mode identification
-      export SYSCFG_HOST="${hostname}"
-
-      # Load local overrides if present
-      [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
-    '';
-
+        # Load local overrides if present
+        [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+      ''
+    ];
     plugins = [
       {
         name = "zsh-history-substring-search";
