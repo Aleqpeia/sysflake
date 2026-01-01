@@ -60,12 +60,12 @@
     # gromacs  # if you need nix version
 
     # === Printing Support ===
-    # CUPS utilities (system service needs to be enabled separately)
-    cups              # Common Unix Printing System
-    system-config-printer  # CUPS GUI configuration
+    # Note: CUPS service must be installed via system package manager
+    # On EndevourOS: sudo pacman -S cups
+    # Then enable: sudo systemctl enable --now cups.service
 
-    # Samba support for network printing
-    samba             # SMB/CIFS support
+    # CUPS utilities for user space
+    system-config-printer  # CUPS GUI configuration
   ];
 
   # Machine identification

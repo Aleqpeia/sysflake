@@ -1,8 +1,10 @@
 { pkgs, lib, ... }:
 {
   home.packages = with pkgs; [
-    # Terminal emulator
-    alacritty
+    # Terminal emulators
+    # alacritty  # Has Wayland issues on EndevourOS
+    kitty       # Better Wayland support
+    wezterm     # Alternative with good Wayland support
 
     # Productivity
     obsidian
@@ -32,10 +34,17 @@
   programs.alacritty = {
     enable = true;
     settings = {
+      # Environment variables
+      env = {
+        TERM = "xterm-256color";
+      };
+
       window = {
         padding = { x = 8; y = 8; };
         decorations = "full";
         opacity = 0.95;
+        # Disable Wayland if causing issues
+        # startup_mode = "Windowed";
       };
 
       font = {
