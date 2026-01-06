@@ -11,9 +11,9 @@
     libtool
 
     # Languages - base tooling
-    python3
-    python3Packages.pip
-    python3Packages.ipython
+    # NOTE: Python is provided via host-specific withPackages environment
+    # to avoid conflicts with data science stacks (see hosts/altair/home.nix)
+    # Individual hosts can add: (python3.withPackages (ps: [ ... ]))
     cargo
     cargo-watch
     cargo-edit

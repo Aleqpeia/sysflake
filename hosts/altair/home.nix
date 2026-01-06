@@ -30,30 +30,37 @@
     ghostscript       # PDF processing
 
     # === Data Analysis ===
-    # Python data science stack
-    python3Packages.numpy
-    python3Packages.pandas
-    python3Packages.matplotlib
-    python3Packages.seaborn
-    python3Packages.scipy
-    python3Packages.scikit-learn
-    python3Packages.jupyterlab
-    python3Packages.notebook
-    python3Packages.polars     # Fast dataframe library
-
+    # Python data science stack with all packages in one environment
+    (python3.withPackages (ps: with ps; [
+      # Core data science
+      numpy
+      pandas
+      matplotlib
+      seaborn
+      scipy
+      scikit-learn
+      
+      # Jupyter
+      jupyterlab
+      notebook
+      ipython
+      
+      # Fast dataframes
+      polars
+      
+      # Visualization
+      plotly
+      bokeh
+      
+      # Data formats
+      openpyxl      # Excel support
+      xlrd
+      h5py          # HDF5 support
+      pyarrow       # Parquet/Arrow support
+    ]))
 
     # Julia for numerical computing
     julia
-
-    # Data visualization
-    python3Packages.plotly
-    python3Packages.bokeh
-
-    # Data formats
-    python3Packages.openpyxl   # Excel support
-    python3Packages.xlrd
-    python3Packages.h5py       # HDF5 support
-    python3Packages.pyarrow    # Parquet/Arrow support
 
     # === Development Tools ===
     # Additional dev tools for altair
