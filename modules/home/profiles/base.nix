@@ -73,4 +73,15 @@
       updates.auto_update = true;
     };
   };
+
+  # Bash config that sources zsh config
+  programs.bash = {
+    enable = true;
+    initExtra = ''
+      # Source zsh config if available
+      if [[ -f ~/.zshrc ]]; then
+        source ~/.zshrc
+      fi
+    '';
+  };
 }

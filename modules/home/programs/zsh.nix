@@ -1,223 +1,104 @@
 { config, pkgs, lib, hostname, ... }:
 {
-  programs.zsh = {
-    enable = true;
-    autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
-    enableCompletion = true;
+  # Create a separate sysflake config file instead of managing .zshrc
+  # Source this from your existing .zshrc by adding:
+  #   [ -f ~/.config/zsh/sysflake.zsh ] && source ~/.config/zsh/sysflake.zsh
+  
+  home.file.".config/zsh/sysflake.zsh".text = ''
+    # ============================================================================
+    # Sysflake Environment Configuration
+    # This file is managed by home-manager
+    # ============================================================================
 
-    # Set dotDir to XDG config directory (new default in 26.05+)
-    dotDir = "${config.xdg.configHome}/zsh";
 
-    history = {
-      size = 100000;
-      save = 100000;
-      path = "${config.xdg.dataHome}/zsh/history";
-      ignoreDups = true;
-      ignoreAllDups = true;
-      ignoreSpace = true;
-      extended = true;
-      share = true;
-    };
+    # Environment variables
+    export SYSCFG_HOST="${hostname}"
+    export SYSCFG_ROOT="$HOME/projects/sysflake"
+    
+    # Aliases - Navigation
+    alias ..="cd .."
+    alias ...="cd ../.."
+    alias ....="cd ../../.."
 
-    shellAliases = {
-      # Navigation
-      ".." = "cd ..";
-      "..." = "cd ../..";
-      "...." = "cd ../../..";
+    # Aliases - Modern replacements
+    alias ls="eza"
+    alias ll="eza -la"
+    alias la="eza -a"
+    alias lt="eza --tree --level=2"
+    alias cat="bat"
+    
+    # Aliases - Git (your existing config probably has these)
+    alias g="git"
+    alias gs="git status -sb"
+    alias gd="git diff"
+    alias gds="git diff --staged"
+    alias gc="git commit"
+    alias gca="git commit --amend"
+    alias gco="git checkout"
+    alias gb="git branch"
+    alias gp="git push"
+    alias gpl="git pull"
+    alias gl="git log --oneline --graph -20"
+    alias gla="git log --oneline --graph --all"
 
-      # Modern replacements
-      ls = "eza";
-      ll = "eza -la";
-      la = "eza -a";
-      lt = "eza --tree --level=2";
-      cat = "bat";
-      grep = "rg";
-      find = "fd";
-      
-      # Git
-      g = "git";
-      gs = "git status -sb";
-      gd = "git diff";
-      gds = "git diff --staged";
-      gc = "git commit";
-      gca = "git commit --amend";
-      gco = "git checkout";
-      gb = "git branch";
-      gp = "git push";
-      gpl = "git pull";
-      gl = "git log --oneline --graph -20";
-      gla = "git log --oneline --graph --all";
+    # Aliases - Nix/Home Manager
+    alias nrs="sudo nixos-rebuild switch --flake ~/projects/sysflake#${hostname}"
+    alias nrb="sudo nixos-rebuild boot --flake ~/projects/sysflake#${hostname}"
+    alias hms="home-manager switch --flake ~/projects/sysflake#${hostname}"
+    alias nfu="nix flake update"
+    alias nfc="nix flake check"
+    alias nsh="nix-shell"
+    alias ndev="nix develop"
 
-      # Nix
-      nrs = "sudo nixos-rebuild switch --flake ~/syscfg#${hostname}";
-      nrb = "sudo nixos-rebuild boot --flake ~/syscfg#${hostname}";
-      hms = "home-manager switch --flake ~/syscfg#${hostname}";
-      nfu = "nix flake update";
-      nfc = "nix flake check";
-      nsh = "nix-shell";
-      ndev = "nix develop";
+    # Aliases - Editors
+    alias v="nvim"
+    alias vi="nvim"
+    alias vim="nvim"
 
-      # Editors
-      v = "nvim";
-      vi = "nvim";
-      vim = "nvim";
+    # Aliases - System
+    alias sc="sudo systemctl"
+    alias scu="systemctl --user"
+    alias jc="journalctl"
+    alias jcu="journalctl --user"
 
-      # System
-      sc = "sudo systemctl";
-      scu = "systemctl --user";
-      jc = "journalctl";
-      jcu = "journalctl --user";
+    # Aliases - Quick edits
+    alias zshrc="$EDITOR ~/projects/sysflake/modules/home/programs/zsh.nix"
+    alias nixcfg="cd ~/projects/sysflake && $EDITOR ."
 
-      # Quick edits
-      zshrc = "$EDITOR ~/syscfg/modules/home/programs/zsh.nix";
-      nixcfg = "cd ~/syscfg && $EDITOR .";
+    # Kubernetes aliases (from kubernetes module)
+    alias k="kubectl"
+    alias kx="kubectx"
+    alias kn="kubens"
+    alias kgp="kubectl get pods"
+    alias kgs="kubectl get svc"
+    alias kgn="kubectl get nodes"
+    alias kga="kubectl get all"
+    alias kd="kubectl describe"
+    alias kl="kubectl logs"
+    alias klf="kubectl logs -f"
+    alias kaf="kubectl apply -f"
+    alias kdf="kubectl delete -f"
+    alias kex="kubectl exec -it"
+    alias h="helm"
+    alias hls="helm list -A"
+    alias hui="helm upgrade --install"
+    alias k9="k9s"
+    
+    # Tailscale aliases
+    alias ts="tailscale"
+    alias tss="tailscale status"
+    alias tsup="sudo tailscale up"
+    alias tsdown="sudo tailscale down"
+    alias tsip="tailscale ip -4"
+    alias tsping="tailscale ping"
 
-      # Safety
-      rm = "rm -i";
-      mv = "mv -i";
-      cp = "cp -i";
-    };
+    # Load local overrides if present
+    [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+  '';
 
-    # Zsh initialization content (replaces deprecated initExtraFirst/initExtra)
-    initContent = lib.mkMerge [
-      (lib.mkBefore ''
-        # Performance: only check compinit once a day
-        autoload -Uz compinit
-        if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
-          compinit
-        else
-          compinit -C
-        fi
-      '')
-      
-      ''
-        # History search with up/down arrows
-        autoload -U up-line-or-beginning-search
-        autoload -U down-line-or-beginning-search
-        zle -N up-line-or-beginning-search
-        zle -N down-line-or-beginning-search
-        bindkey "^[[A" up-line-or-beginning-search
-        bindkey "^[[B" down-line-or-beginning-search
-
-        # Edit command in $EDITOR with Ctrl-X Ctrl-E
-        autoload -z edit-command-line
-        zle -N edit-command-line
-        bindkey "^X^E" edit-command-line
-
-        # Word navigation (Ctrl + arrows)
-        bindkey "^[[1;5C" forward-word
-        bindkey "^[[1;5D" backward-word
-
-        # Better directory stack
-        setopt AUTO_PUSHD
-        setopt PUSHD_IGNORE_DUPS
-        setopt PUSHD_SILENT
-
-        # Globbing
-        setopt EXTENDED_GLOB
-        setopt NO_CASE_GLOB
-
-        # Job control
-        setopt NO_HUP
-        setopt NO_BG_NICE
-
-        # Host/mode identification
-        export SYSCFG_HOST="${hostname}"
-
-        # Load local overrides if present
-        [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
-      ''
-    ];
-    plugins = [
-      {
-        name = "zsh-history-substring-search";
-        src = pkgs.zsh-history-substring-search;
-        file = "share/zsh-history-substring-search/zsh-history-substring-search.zsh";
-      }
-      {
-        name = "zsh-nix-shell";
-        src = pkgs.zsh-nix-shell;
-        file = "share/zsh-nix-shell/nix-shell.plugin.zsh";
-      }
-    ];
-  };
-
-  programs.starship = {
-    enable = true;
-    enableZshIntegration = true;
-    settings = {
-      add_newline = false;
-      
-      format = lib.concatStrings [
-        "$username"
-        "$hostname"
-        "$directory"
-        "$git_branch"
-        "$git_status"
-        "$python"
-        "$rust"
-        "$nix_shell"
-        "$cmd_duration"
-        "$line_break"
-        "$character"
-      ];
-
-      character = {
-        success_symbol = "[›](bold green)";
-        error_symbol = "[›](bold red)";
-        vimcmd_symbol = "[‹](bold green)";
-      };
-
-      directory = {
-        truncation_length = 4;
-        truncation_symbol = "…/";
-        style = "bold cyan";
-      };
-
-      git_branch = {
-        symbol = " ";
-        style = "bold purple";
-      };
-
-      git_status = {
-        format = "[$all_status$ahead_behind]($style) ";
-        style = "bold red";
-      };
-
-      python = {
-        symbol = " ";
-        style = "bold yellow";
-      };
-
-      rust = {
-        symbol = " ";
-        style = "bold red";
-      };
-
-      nix_shell = {
-        symbol = " ";
-        format = "[$symbol$state]($style) ";
-        style = "bold blue";
-      };
-
-      cmd_duration = {
-        min_time = 2000;
-        format = "[$duration]($style) ";
-        style = "bold yellow";
-      };
-
-      hostname = {
-        ssh_only = false;
-        format = "[@$hostname]($style) ";
-        style = "bold green";
-      };
-
-      username = {
-        show_always = false;
-        format = "[$user]($style)";
-        style_user = "bold green";
-      };
-    };
+  # Don't manage the main .zshrc, just provide environment
+  home.sessionVariables = {
+    SYSCFG_HOST = hostname;
+    SYSCFG_ROOT = "$HOME/projects/sysflake";
   };
 }
