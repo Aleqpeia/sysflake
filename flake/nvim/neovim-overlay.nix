@@ -32,6 +32,12 @@ with final.pkgs.lib; let
     # https://search.nixos.org/packages?channel=unstable&from=0&size=50&sort=relevance&type=packages&query=vimPlugins
     nvim-treesitter.withAllGrammars
     luasnip # snippets | https://github.com/l3mon4d3/luasnip/
+    # plugin and lsp management
+    lazy-nvim # https://github.com/folke/lazy.nvim
+    mason-nvim # https://github.com/williamboman/mason.nvim
+    mason-lspconfig # https://github.com/williamboman/mason-lspconfig.nvim
+    mason-nvim-dap # https://github.com/jay-babu/mason-nvim-dap.nvim
+    # ^ plugin and lsp management
     # nvim-cmp (autocompletion) and extensions
     nvim-cmp # https://github.com/hrsh7th/nvim-cmp
     cmp_luasnip # snippets autocompletion extension for nim-cmp | https://github.com/saadparwaiz1/cmp_luasnip/
@@ -69,10 +75,13 @@ with final.pkgs.lib; let
     nvim-surround # https://github.com/kylechui/nvim-surround/
     nvim-treesitter-textobjects # https://github.com/nvim-treesitter/nvim-treesitter-textobjects/
     nvim-ts-context-commentstring # https://github.com/joosepalviste/nvim-ts-context-commentstring/
+    nvim-cursorline # https://github.com/yamatsum/nvim-cursorline
+    nvim-neotree # https://github.com/nvim-neo-tree/neo-tree.nvim
     # ^ navigation/editing enhancement plugins
     # Useful utilities
     nvim-unception # Prevent nested neovim sessions | nvim-unception
-    # ^ Useful utilities
+    nvim-mini-animate # https://github.com/echasnovski/mini.animate
+      # ^ Useful utilities
     # libraries that other plugins depend on
     sqlite-lua
     plenary-nvim
@@ -83,12 +92,29 @@ with final.pkgs.lib; let
     # (mkNvimPlugin inputs.wf-nvim "wf.nvim") # (example) keymap hints | https://github.com/Cassin01/wf.nvim
     # ^ bleeding-edge plugins from flake inputs
     which-key-nvim
+    # themes 
+    kanagawa-nvim # kanagawa
+    catppuccin-nvim # catppuccin
+    nord-nvim # nord
+    everforest-nvim # everforest
+    # ^ themes
+    # ai 
+    copilot-lua
+    copilot-cmp
+    # ^ ai
   ];
 
   extraPackages = with pkgs; [
     # language servers, etc.
     lua-language-server
     nil # nix LSP
+    nixd # nix LSP (alternative)
+    stylua # lua formatter
+    ruff # python linter
+    pyright # python LSP
+    rust-analyzer # rust LSP
+    shfmt # shell formatter
+    nixfmt-rfc-style # nix formatter
   ];
 in {
   # This is the neovim derivation
