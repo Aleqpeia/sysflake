@@ -24,6 +24,7 @@
     curl
     wget
     rsync
+    sshfs
 
     # Text processing
     gawk
