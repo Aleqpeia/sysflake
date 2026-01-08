@@ -15,6 +15,7 @@ in {
     ./programs/git.nix
     ./programs/direnv.nix
     ./programs/neovim.nix
+    ./services/syncthing.nix
   ] ++ enabledProfiles;
 
   # Base home-manager config
