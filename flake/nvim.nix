@@ -1,3 +1,4 @@
+
 # Custom Neovim configuration
 # Uses mkNeovim.nix builder with overlay
 { ... }:
@@ -6,13 +7,14 @@
     # Expose neovim packages from the overlay
     packages = {
       # Main neovim package (used as default)
-      khanelivim = pkgs.nvim-pkg;
+      efyisvim = pkgs.neovim-unwrapped;
       
       # Development version (loads config from ~/.config/nvim-dev)
-      khanelivim-dev = pkgs.nvim-dev;
+      efyisvim-dev = pkgs.neovim-unwrapped;
       
       # Luarc for LSP integration in devshells
       nvim-luarc-json = pkgs.nvim-luarc-json;
     };
   };
 }
+

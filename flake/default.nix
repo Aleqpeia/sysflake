@@ -45,6 +45,6 @@
         };
       };
       # Default package is the custom neovim
-      packages.default = config.packages.khanelivim;
+      packages.default = config.packages.efyisvim;
     };
 }
