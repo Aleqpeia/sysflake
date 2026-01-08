@@ -63,7 +63,6 @@ in {
 
   # Spotify TUI client for terminal-based control
   home.packages = with pkgs; [
-    spotify-tui  # ncurses Spotify client (spt command)
     spotify-player  # Alternative TUI player
   ];
 

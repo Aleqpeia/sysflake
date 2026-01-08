@@ -1,12 +1,12 @@
 { pkgs, hostname, ... }:
 {
   # Host-specific home-manager configuration for proxima
-  # NixOS workstation - primary homelab machine with k3s
+  # NixOS workstation - primary homelab machine
   #
-  # Services running on this host:
-  # - k3s (Kubernetes)
-  # - Prometheus & Grafana (monitoring)
-  # - Tailscale (mesh VPN)
+  # System services are managed separately:
+  # - Tailscale: sudo systemctl enable --now tailscaled && sudo tailscale up
+  # - k3s: See k8s/README.md for container-based or native setup
+  # - Prometheus/Grafana: Use monitoring/podman-compose.yml
 
   home.packages = with pkgs; [
     # Productivity
@@ -16,7 +16,7 @@
     # Development
     devenv
 
-    # Server/homelab management
+    # Homelab management
     ncdu
     duf
     bandwhich
@@ -28,15 +28,15 @@
   # Machine identification
   home.sessionVariables = {
     SYSCFG_HOST = hostname;
-    SYSCFG_MODE = "nixos";
+    SYSCFG_MODE = "standalone";
 
-    # k3s kubeconfig is copied to ~/.kube/config by system activation
-    KUBECONFIG = "$HOME/.kube/config";
+    # k3s kubeconfig (if running k3s)
+    # KUBECONFIG = "$HOME/.kube/config";
   };
 
   # Spotifyd configuration
   services.spotifyd.settings.global.device_name = "proxima";
 
-  # GUI-specific overrides
-  # programs.alacritty.settings.font.size = 11;
+  # Systemd user services for standalone home-manager
+  systemd.user.startServices = "sd-switch";
 }

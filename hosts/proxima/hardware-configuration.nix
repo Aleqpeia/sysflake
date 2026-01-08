@@ -8,137 +8,14 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "sd_mod" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "tmpfs";
-      fsType = "tmpfs";
-    };
-
-  fileSystems."/nix" =
     { device = "/dev/disk/by-uuid/098fc96a-de25-46a7-b941-dbefc78f2818";
       fsType = "ext4";
-    };
-
-  fileSystems."/nix/store/xx7cm72qy2c0643cm1ipngd87aqwkcdp-glibc-2.40-66/etc" =
-    { device = "tmpfs";
-      fsType = "tmpfs";
-    };
-
-  fileSystems."/etc" =
-    { device = "tmpfs";
-      fsType = "tmpfs";
-    };
-
-  fileSystems."/nix-support" =
-    { device = "/nix/nix/store/9wqw5ifiwjm5nd2wk5bai8xciaqw469s-cursor-2.2.44-fhsenv-rootfs/nix-support";
-      fsType = "none";
-      options = [ "bind" ];
-    };
-
-  fileSystems."/usr" =
-    { device = "/nix/nix/store/9wqw5ifiwjm5nd2wk5bai8xciaqw469s-cursor-2.2.44-fhsenv-rootfs/usr";
-      fsType = "none";
-      options = [ "bind" ];
-    };
-
-  fileSystems."/etc/bash_completion.d" =
-    { device = "/nix/nix/store/9wqw5ifiwjm5nd2wk5bai8xciaqw469s-cursor-2.2.44-fhsenv-rootfs/etc/bash_completion.d";
-      fsType = "none";
-      options = [ "bind" ];
-    };
-
-  fileSystems."/etc/cups" =
-    { device = "/nix/nix/store/9wqw5ifiwjm5nd2wk5bai8xciaqw469s-cursor-2.2.44-fhsenv-rootfs/etc/cups";
-      fsType = "none";
-      options = [ "bind" ];
-    };
-
-  fileSystems."/etc/dbus-1" =
-    { device = "/nix/nix/store/9wqw5ifiwjm5nd2wk5bai8xciaqw469s-cursor-2.2.44-fhsenv-rootfs/etc/dbus-1";
-      fsType = "none";
-      options = [ "bind" ];
-    };
-
-  fileSystems."/etc/gtk-3.0" =
-    { device = "/nix/nix/store/9wqw5ifiwjm5nd2wk5bai8xciaqw469s-cursor-2.2.44-fhsenv-rootfs/etc/gtk-3.0";
-      fsType = "none";
-      options = [ "bind" ];
-    };
-
-  fileSystems."/etc/locale" =
-    { device = "/nix/nix/store/9wqw5ifiwjm5nd2wk5bai8xciaqw469s-cursor-2.2.44-fhsenv-rootfs/etc/locale";
-      fsType = "none";
-      options = [ "bind" ];
-    };
-
-  fileSystems."/etc/man" =
-    { device = "/nix/nix/store/9wqw5ifiwjm5nd2wk5bai8xciaqw469s-cursor-2.2.44-fhsenv-rootfs/etc/man";
-      fsType = "none";
-      options = [ "bind" ];
-    };
-
-  fileSystems."/etc/pam.d" =
-    { device = "/nix/nix/store/9wqw5ifiwjm5nd2wk5bai8xciaqw469s-cursor-2.2.44-fhsenv-rootfs/etc/pam.d";
-      fsType = "none";
-      options = [ "bind" ];
-    };
-
-  fileSystems."/etc/pkcs11" =
-    { device = "/nix/nix/store/9wqw5ifiwjm5nd2wk5bai8xciaqw469s-cursor-2.2.44-fhsenv-rootfs/etc/pkcs11";
-      fsType = "none";
-      options = [ "bind" ];
-    };
-
-  fileSystems."/etc/pkgconfig" =
-    { device = "/nix/nix/store/9wqw5ifiwjm5nd2wk5bai8xciaqw469s-cursor-2.2.44-fhsenv-rootfs/etc/pkgconfig";
-      fsType = "none";
-      options = [ "bind" ];
-    };
-
-  fileSystems."/etc/profile.d" =
-    { device = "/nix/nix/store/9wqw5ifiwjm5nd2wk5bai8xciaqw469s-cursor-2.2.44-fhsenv-rootfs/etc/profile.d";
-      fsType = "none";
-      options = [ "bind" ];
-    };
-
-  fileSystems."/etc/systemd" =
-    { device = "/nix/nix/store/9wqw5ifiwjm5nd2wk5bai8xciaqw469s-cursor-2.2.44-fhsenv-rootfs/etc/systemd";
-      fsType = "none";
-      options = [ "bind" ];
-    };
-
-  fileSystems."/etc/X11" =
-    { device = "/nix/nix/store/9wqw5ifiwjm5nd2wk5bai8xciaqw469s-cursor-2.2.44-fhsenv-rootfs/etc/X11";
-      fsType = "none";
-      options = [ "bind" ];
-    };
-
-  fileSystems."/etc/xdg" =
-    { device = "/nix/nix/store/9wqw5ifiwjm5nd2wk5bai8xciaqw469s-cursor-2.2.44-fhsenv-rootfs/etc/xdg";
-      fsType = "none";
-      options = [ "bind" ];
-    };
-
-  fileSystems."/etc/xinetd.d" =
-    { device = "/nix/nix/store/9wqw5ifiwjm5nd2wk5bai8xciaqw469s-cursor-2.2.44-fhsenv-rootfs/etc/xinetd.d";
-      fsType = "none";
-      options = [ "bind" ];
-    };
-
-  fileSystems."/etc/xkeyboard-config-2" =
-    { device = "/nix/nix/store/9wqw5ifiwjm5nd2wk5bai8xciaqw469s-cursor-2.2.44-fhsenv-rootfs/etc/xkeyboard-config-2";
-      fsType = "none";
-      options = [ "bind" ];
-    };
-
-  fileSystems."/.host-etc" =
-    { device = "/nix/etc";
-      fsType = "none";
-      options = [ "bind" ];
     };
 
   fileSystems."/boot" =
@@ -147,73 +24,15 @@
       options = [ "fmask=0077" "dmask=0077" ];
     };
 
-  fileSystems."/home" =
-    { device = "/nix/home";
-      fsType = "none";
-      options = [ "bind" ];
-    };
+  swapDevices = [ ];
 
-  fileSystems."/home/efyis/hotarchive" =
-    { device = "/dev/disk/by-uuid/3d256ccc-be7a-4bed-8af5-26db7a7c31fb";
-      fsType = "ext4";
-    };
-
-  fileSystems."/keep" =
-    { device = "/nix/keep";
-      fsType = "none";
-      options = [ "bind" ];
-    };
-
-  fileSystems."/lost+found" =
-    { device = "/nix/lost+found";
-      fsType = "none";
-      options = [ "bind" ];
-    };
-
-  fileSystems."/mnt" =
-    { device = "/nix/mnt";
-      fsType = "none";
-      options = [ "bind" ];
-    };
-
-  fileSystems."/opt" =
-    { device = "/nix/opt";
-      fsType = "none";
-      options = [ "bind" ];
-    };
-
-  fileSystems."/root" =
-    { device = "/nix/root";
-      fsType = "none";
-      options = [ "bind" ];
-    };
-
-  fileSystems."/srv" =
-    { device = "/nix/srv";
-      fsType = "none";
-      options = [ "bind" ];
-    };
-
-  fileSystems."/tmp" =
-    { device = "/nix/tmp";
-      fsType = "none";
-      options = [ "bind" ];
-    };
-
-  fileSystems."/var" =
-    { device = "/nix/var";
-      fsType = "none";
-      options = [ "bind" ];
-    };
-
-  fileSystems."/tmp/.X11-unix" =
-    { device = "tmpfs";
-      fsType = "tmpfs";
-    };
-
-  swapDevices =
-    [ { device = "/dev/disk/by-uuid/d56b617b-e2f0-420f-95b1-5213ff29ee22"; }
-    ];
+  # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
+  # (the default) this is the recommended approach. When using systemd-networkd it's
+  # still possible to use this option, but it's recommended to use it in conjunction
+  # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
+  networking.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp7s0.useDHCP = lib.mkDefault true;
+  # networking.interfaces.wlo1.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

@@ -1,6 +1,10 @@
 { inputs, self, lib, ... }:
 let
   # Host registry: declares which hosts exist and their properties
+  #
+  # Both hosts use standalone mode (home-manager only).
+  # System services (tailscale, k3s, etc.) are installed via the
+  # system package manager or run as containers.
   hosts = {
     altair = {
       system = "x86_64-linux";
@@ -10,17 +14,10 @@ let
     };
     proxima = {
       system = "x86_64-linux";
-      mode = "nixos";  # NixOS workstation - primary homelab machine
+      mode = "standalone";  # NixOS with home-manager (system config via /etc/nixos)
       username = "efyis";
       profiles = [ "base" "dev" "gui" ];
     };
-    # Template for future NixOS hosts:
-    # vega = {
-    #   system = "x86_64-linux";
-    #   mode = "nixos";
-    #   username = "efyis";
-    #   profiles = [ "base" "dev" ];
-    # };
   };
 
   # Only standalone hosts get homeConfigurations output

@@ -31,7 +31,7 @@
 
   # Kubeconfig location
   home.sessionVariables = {
-    KUBECONFIG = "${config.home.homeDirectory}/.kube/config";
+    KUBECONFIG = lib.mkDefault "${config.home.homeDirectory}/.kube/config";
   };
 
   # Shell aliases for common operations
