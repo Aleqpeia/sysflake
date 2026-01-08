@@ -11,11 +11,17 @@ let
 
 in {
   imports = [
+    # Programs
     ./programs/zsh.nix
     ./programs/git.nix
     ./programs/direnv.nix
     ./programs/neovim.nix
+    ./programs/kubernetes.nix
+
+    # Services
     ./services/syncthing.nix
+    ./services/tailscale.nix
+    ./services/spotifyd.nix
   ] ++ enabledProfiles;
 
   # Base home-manager config

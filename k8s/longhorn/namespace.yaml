@@ -1,0 +1,8 @@
+# Longhorn namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: longhorn-system
+  labels:
+    app: longhorn
+

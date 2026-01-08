@@ -1,0 +1,34 @@
+# MetalLB Configuration
+#
+# IMPORTANT: Edit the IP address range to match your network!
+# These IPs should be:
+# - In the same subnet as your k3s node
+# - NOT used by DHCP or other devices
+# - Reserved for LoadBalancer services
+#
+# Example: If your network is 192.168.1.0/24 and DHCP uses .1-.200,
+# you could use .210-.250 for MetalLB
+
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: homelab-pool
+  namespace: metallb-system
+spec:
+  addresses:
+    # TODO: Change this to your network's available IP range
+    - 192.168.1.210-192.168.1.250
+
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: homelab-l2
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+    - homelab-pool
+  # Optionally limit to specific interfaces
+  # interfaces:
+  #   - eth0
+

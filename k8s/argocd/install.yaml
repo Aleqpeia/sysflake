@@ -1,0 +1,30 @@
+# ArgoCD Installation
+#
+# This is a placeholder - ArgoCD should be installed from official manifests.
+#
+# Install with:
+#   kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+#
+# Or for HA setup:
+#   kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/ha/install.yaml
+#
+# After installation:
+# 1. Get initial admin password:
+#    kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+#
+# 2. Port forward to access UI:
+#    kubectl port-forward svc/argocd-server -n argocd 8080:443
+#
+# 3. Or expose via NodePort (see service-nodeport.yaml)
+#
+# Documentation: https://argo-cd.readthedocs.io/
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-install-info
+  namespace: argocd
+data:
+  install-command: |
+    kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+

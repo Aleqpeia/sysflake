@@ -1,0 +1,26 @@
+# ArgoCD Server NodePort Service
+#
+# This exposes ArgoCD on a NodePort for easy access without ingress.
+# Apply AFTER the main ArgoCD installation.
+#
+# Access at: https://vega:30080 (or your node's IP)
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: argocd-server-nodeport
+  namespace: argocd
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/name: argocd-server
+spec:
+  type: NodePort
+  ports:
+    - name: https
+      port: 443
+      targetPort: 8080
+      nodePort: 30080
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: argocd-server
+

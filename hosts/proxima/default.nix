@@ -1,16 +1,25 @@
 { pkgs, ... }:
 {
   imports = [
-    ./hardware.nix
+    ./hardware-configuration.nix
+
+    # Homelab services
+    ../../modules/nixos/services/tailscale.nix
+    ../../modules/nixos/services/k3s.nix
+    ../../modules/nixos/services/prometheus.nix
+    ../../modules/nixos/services/grafana.nix
+    # ../../modules/nixos/services/cachix.nix  # Uncomment after configuring
   ];
 
-  # Host-specific NixOS configuration for vega
-  # Full NixOS system
+  # ===========================================================================
+  # Host-specific NixOS configuration for proxima
+  # Primary NixOS workstation running homelab k3s cluster
+  # ===========================================================================
 
-  # Desktop environment (vega has no GUI by default as per profiles)
-  # Uncomment if you want a GUI on vega:
-  # services.displayManager.gdm.enable = true;
-  # services.desktopManager.gnome.enable = true;
+  # Desktop environment
+  services.xserver.enable = true;
+  services.displayManager.gdm.enable = true;
+  services.desktopManager.gnome.enable = true;
 
   # Audio
   services.pipewire = {
@@ -21,24 +30,59 @@
     jack.enable = true;
   };
 
-  # Graphics (adjust for your hardware)
+  # Graphics
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
   };
 
-  # Additional system packages specific to this machine
+  # Additional system packages
   environment.systemPackages = with pkgs; [
     # Development
     gcc
     gnumake
     cmake
-    
-    # System tools
-    nvtopPackages.nvidia  # if you have nvidia
-    # nvtopPackages.amd    # if AMD
+
+    # System monitoring
+    # nvtopPackages.nvidia  # Uncomment if you have nvidia
+    # nvtopPackages.amd     # Uncomment if AMD
+    iotop
+    nethogs
+    ncdu
+
+    # Container debugging
+    dive
+    skopeo
   ];
 
-  # Host-specific services
-  # services.slurm = { ... };  # If running SLURM locally
+  # ===========================================================================
+  # k3s Configuration
+  # ===========================================================================
+
+  # Disable built-in load balancer if using MetalLB
+  # services.k3s.extraFlags = toString [
+  #   "--disable servicelb"
+  #   "--disable traefik"  # If using different ingress
+  # ];
+
+  # ===========================================================================
+  # Storage for k8s (Longhorn requirements)
+  # ===========================================================================
+
+  # Longhorn needs open-iscsi
+  services.openiscsi = {
+    enable = true;
+    name = "proxima-iscsi";
+  };
+
+  # ===========================================================================
+  # Networking
+  # ===========================================================================
+
+  # Enable IP forwarding for k8s networking
+  boot.kernel.sysctl = {
+    "net.ipv4.ip_forward" = 1;
+    "net.bridge.bridge-nf-call-iptables" = 1;
+    "net.bridge.bridge-nf-call-ip6tables" = 1;
+  };
 }

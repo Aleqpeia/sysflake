@@ -59,7 +59,7 @@
 
   # Create convenience symlink for kubeconfig
   # The k3s service creates /etc/rancher/k3s/k3s.yaml
-  system.activationScripts.k3s-kubeconfig = ''
+  system.activationScripts.k3s-kubeconfig = lib.stringAfter [ "users" ] ''
     mkdir -p /home/${hostConfig.username}/.kube
     if [ -f /etc/rancher/k3s/k3s.yaml ]; then
       cp /etc/rancher/k3s/k3s.yaml /home/${hostConfig.username}/.kube/config

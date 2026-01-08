@@ -2,6 +2,11 @@
 {
   # Host-specific home-manager configuration for altair
   # EndevourOS workstation for development, PDF/LaTeX editing, and data analysis
+  #
+  # NOTE: System-level services must be installed via pacman:
+  #   sudo pacman -S tailscale
+  #   sudo systemctl enable --now tailscaled
+  #   sudo tailscale up
 
   home.packages = with pkgs; [
     # === LaTeX Support ===
@@ -94,6 +99,9 @@
 
   # Host-specific program overrides
   # programs.alacritty.settings.font.size = 12;
+
+  # Spotifyd configuration
+  services.spotifyd.settings.global.device_name = "altair";
 
   # Git configuration for data science work
   programs.git.ignores = [

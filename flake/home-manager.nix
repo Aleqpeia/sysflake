@@ -10,16 +10,17 @@ let
     };
     proxima = {
       system = "x86_64-linux";
-      mode = "standalone";
+      mode = "nixos";  # NixOS workstation - primary homelab machine
       username = "efyis";
       profiles = [ "base" "dev" "gui" ];
     };
-    vega = {
-      system = "x86_64-linux";
-      mode = "nixos";  # Full NixOS system
-      username = "efyis";
-      profiles = [ "base" "dev" ];
-    };
+    # Template for future NixOS hosts:
+    # vega = {
+    #   system = "x86_64-linux";
+    #   mode = "nixos";
+    #   username = "efyis";
+    #   profiles = [ "base" "dev" ];
+    # };
   };
 
   # Only standalone hosts get homeConfigurations output

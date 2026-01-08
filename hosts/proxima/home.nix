@@ -1,28 +1,42 @@
 { pkgs, hostname, ... }:
 {
   # Host-specific home-manager configuration for proxima
-  # Your Fedora home workstation
+  # NixOS workstation - primary homelab machine with k3s
+  #
+  # Services running on this host:
+  # - k3s (Kubernetes)
+  # - Prometheus & Grafana (monitoring)
+  # - Tailscale (mesh VPN)
 
   home.packages = with pkgs; [
-    # Additional packages for this machine
+    # Productivity
     obsidian
     zotero
-    
-    # Things that work better via nix on Fedora
+
+    # Development
     devenv
+
+    # Server/homelab management
+    ncdu
+    duf
+    bandwhich
+
+    # Remote access
+    remmina
   ];
 
   # Machine identification
   home.sessionVariables = {
     SYSCFG_HOST = hostname;
-    SYSCFG_MODE = "standalone";
+    SYSCFG_MODE = "nixos";
+
+    # k3s kubeconfig is copied to ~/.kube/config by system activation
+    KUBECONFIG = "$HOME/.kube/config";
   };
 
-  # Fedora-specific adjustments
-  # Font size might differ from NixOS machine
-  # programs.alacritty.settings.font.size = 11;
+  # Spotifyd configuration
+  services.spotifyd.settings.global.device_name = "proxima";
 
-  # Systemd user services for standalone home-manager
-  # (NixOS handles this differently)
-  systemd.user.startServices = "sd-switch";
+  # GUI-specific overrides
+  # programs.alacritty.settings.font.size = 11;
 }

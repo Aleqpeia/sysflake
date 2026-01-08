@@ -1,0 +1,58 @@
+# Longhorn Helm values for homelab
+#
+# Install with:
+#   helm repo add longhorn https://charts.longhorn.io
+#   helm install longhorn longhorn/longhorn -n longhorn-system -f values.yaml
+#
+# Documentation: https://longhorn.io/docs/
+
+# Default settings for single-node homelab
+defaultSettings:
+  # Replicas - set to 1 for single node, increase for multi-node
+  defaultReplicaCount: 1
+
+  # Storage reservation
+  storageMinimalAvailablePercentage: 15
+  storageOverProvisioningPercentage: 100
+
+  # Backup target (optional - configure for off-site backups)
+  # backupTarget: "s3://your-bucket@your-region/"
+  # backupTargetCredentialSecret: "longhorn-backup-secret"
+
+  # Node selector (if you want storage only on specific nodes)
+  # systemManagedComponentsNodeSelector: "storage=true"
+
+# UI settings
+ingress:
+  enabled: false  # We'll use NodePort instead
+
+service:
+  ui:
+    type: NodePort
+    nodePort: 30081
+
+# Resource limits for homelab (adjust based on your hardware)
+longhornManager:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+longhornDriver:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+# Persistence settings
+persistence:
+  defaultClass: true
+  defaultClassReplicaCount: 1
+  reclaimPolicy: Retain
+
