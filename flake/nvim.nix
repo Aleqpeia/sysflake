@@ -7,10 +7,10 @@
     # Expose neovim packages from the overlay
     packages = {
       # Main neovim package (used as default)
-      efyisvim = pkgs.neovim-unwrapped;
+      catvim = pkgs.nvim-pkg;
       
       # Development version (loads config from ~/.config/nvim-dev)
-      efyisvim-dev = pkgs.neovim-unwrapped;
+      catvim-dev = pkgs.nvim-dev;
       
       # Luarc for LSP integration in devshells
       nvim-luarc-json = pkgs.nvim-luarc-json;

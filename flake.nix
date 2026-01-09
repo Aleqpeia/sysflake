@@ -17,7 +17,7 @@
     };
 
     # Neovim
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    nixcats-nvim.url = "github:BirdeeHub/nixcats-nvim";
 
     # Optional: pkgs-by-name for custom packages
     pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";

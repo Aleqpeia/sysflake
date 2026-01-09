@@ -6,7 +6,7 @@
   
   programs.neovim = {
     enable = true;
-    package = pkgs.nvim-pkg;
+    package = pkgs.nixcats-nvim.packages.${pkgs.system}.default;
     
     viAlias = true;
     vimAlias = true;
