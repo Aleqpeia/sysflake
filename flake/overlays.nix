@@ -5,10 +5,7 @@
     # Default overlay includes neovim customization
     default = inputs.self.overlays.neovim-custom;
 
-    # Neovim-nightly overlay from nixpkgs
-    nixcats-nvim = inputs.nixcats-nvim.overlays.nixcats-nvim;
-
-    # Custom neovim configuration overlay
+    # Custom neovim configuration overlay (using nixCats)
     neovim-custom = final: prev:
       let
         neovimOverlay = import ./nvim/neovim-overlay.nix { inherit inputs; };
