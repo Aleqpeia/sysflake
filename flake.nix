@@ -23,9 +23,11 @@
   nixConfig = {
     extra-substituters = [
       "https://nix-community.cachix.org"
+      "https://elifsina.cachix.org"
     ];
     extra-trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "elifsina.cachix.org-1:RZ1Y/ZzeHBrm4z51PY+OyFZDW/BOXbprha65ysdkwKg="
     ];
     allow-import-from-derivation = false;
   };
