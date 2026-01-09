@@ -6,7 +6,7 @@
     default = inputs.self.overlays.neovim-custom;
 
     # Neovim-nightly overlay from nixpkgs
-    neovim-nightly = inputs.neovim-nightly-overlay.overlays.default;
+    nixcats-nvim = inputs.nixcats-nvim.overlays.nixcats-nvim;
 
     # Custom neovim configuration overlay
     neovim-custom = final: prev:
