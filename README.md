@@ -1,11 +1,11 @@
-# syscfg
+# sysflake
 
-Multi-machine NixOS and home-manager configuration with support for mixed environments (NixOS + Fedora/etc).
+Multi-machine NixOS and home-manager configuration with support for mixed environments (NixOS + Arch/etc).
 
 ## Structure
 
 ```
-syscfg/
+sysflake/
 ├── flake.nix                 # Main flake definition
 ├── flake/
 │   ├── default.nix           # Flake-parts orchestration
